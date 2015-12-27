@@ -1,0 +1,26 @@
+{
+  "name": "npm-doctor",
+  "version": "1.0.0",
+  "description": "Search github issues based on the node modules you've installed locally",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive test"
+  },
+  "keywords": [
+    "npm",
+    "issues",
+    "github",
+    "git",
+    "node",
+    "doctor",
+    "local",
+    "packages",
+    "locally",
+    "installed",
+    "packages",
+    "search",
+    "find"
+  ],
+  "author": "szarringhalam",
+  "license": "MIT"
+}
