@@ -22,5 +22,8 @@
     "find"
   ],
   "author": "szarringhalam",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "github": "^0.2.4"
+  }
 }
