@@ -24,6 +24,7 @@
   "author": "szarringhalam",
   "license": "MIT",
   "dependencies": {
-    "github": "^0.2.4"
+    "github": "^0.2.4",
+    "q": "^1.4.1"
   }
 }
