@@ -33,7 +33,9 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "chai-as-promised": "^5.2.0",
     "mocha": "^2.3.4",
+    "rewire": "^2.5.1",
     "sinon": "^1.17.2"
   }
 }

@@ -29,7 +29,11 @@ function searchIssues(repos, query) {
 		return 'repo:'+repo;
 	}).join(' ');
 
-	msg.q = query + ' ' + reposQuery;
+	msg.q = query || '';
+
+	if (reposQuery) {
+		msg.q += ' ' + reposQuery;
+	}
 
 	github.search.issues(msg, function (err, res) {
 		if (err) {
