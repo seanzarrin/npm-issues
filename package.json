@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Search github issues based on the node modules you've installed locally",
   "main": "index.js",
+  "bin": {
+    "npm-doctor": "./bin/cli.js"
+  },
   "scripts": {
     "test": "mocha --recursive test"
   },
