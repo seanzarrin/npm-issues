@@ -34,3 +34,6 @@ When you find issues, please add an issue to the repo
 
 ## Contributions
 Feel free to contribue. But please add tests and keep coverage at 100%. You can run tests by doing `npm test`, and view the coverage report at the bottom of the output.
+
+## License
+MIT
