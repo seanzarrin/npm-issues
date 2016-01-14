@@ -6,6 +6,13 @@
   "bin": {
     "npm-doctor": "./bin/cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seanzarrin/npm-doctor"
+  },
+  "bugs": {
+    "url": "https://github.com/seanzarrin/npm-doctor/issues"
+  },
   "scripts": {
     "test": "istanbul cover _mocha -- --recursive test",
     "lint": "eslint bin/*.js helpers/*.js lib/*.js test/**/*.js"
@@ -25,7 +32,7 @@
     "search",
     "find"
   ],
-  "author": "szarringhalam",
+  "author": "Sean Zarringhalam",
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.1",
