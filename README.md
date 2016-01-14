@@ -1,8 +1,8 @@
 npm-doctor
 ==============================
 
-npm-doctor is a command line tool that will search all of the github issues pages
-of your locally installed npm modules, and give you the matching results of your query.
+npm-doctor is a command line tool that searches the github issues pages
+of all your locally installed npm modules at once, and gives you the matching results of your query.
 
 ## Usage
 
