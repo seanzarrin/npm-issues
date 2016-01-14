@@ -4,6 +4,7 @@ var sinon = require('sinon');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 var rewire = require('rewire');
+
 var githubHelper = rewire('../../helpers/github-helper');
 
 var assert = chai.assert;
