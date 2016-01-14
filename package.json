@@ -7,7 +7,8 @@
     "npm-doctor": "./bin/cli.js"
   },
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive test"
+    "test": "istanbul cover _mocha -- --recursive test",
+    "lint": "eslint bin/*.js helpers/*.js lib/*.js test/**/*.js"
   },
   "keywords": [
     "npm",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
+    "eslint": "^1.10.3",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "rewire": "^2.5.1",

@@ -15,40 +15,40 @@ sinon.assert.expose(assert, {prefix: ''});
 chai.use(chaiAsPromised);
 
 describe('npm-doctor', function () {
-	var getReposStub, searchIssuesStub, repos;
+    var getReposStub, searchIssuesStub, repos;
 
-	beforeEach(function () {
-		getReposStub = sinon.stub(npmHelper, 'getRepos');
-		searchIssuesStub = sinon.stub(githubHelper, 'searchIssues');
+    beforeEach(function () {
+        getReposStub = sinon.stub(npmHelper, 'getRepos');
+        searchIssuesStub = sinon.stub(githubHelper, 'searchIssues');
 
-		repos = ['repo1', 'repo2'];
-		getReposStub.returns(q(repos));
-	});
+        repos = ['repo1', 'repo2'];
+        getReposStub.returns(q(repos));
+    });
 
-	afterEach(function () {
-		getReposStub.restore();
-		searchIssuesStub.restore();
-	});
+    afterEach(function () {
+        getReposStub.restore();
+        searchIssuesStub.restore();
+    });
 
-	describe('#searchIssues', function () {
-		it('calls githubHelper#searchIssues with repos and a query', function () {
-			var query = 'myquery';
+    describe('#searchIssues', function () {
+        it('calls githubHelper#searchIssues with repos and a query', function () {
+            var query = 'myquery';
 
-			var promise = npmDoctor.searchIssues(query);
+            var promise = npmDoctor.searchIssues(query);
 
-			return promise.then(function () {
-				assert.calledWith(searchIssuesStub, repos, query);
-			});
-		});
+            return promise.then(function () {
+                assert.calledWith(searchIssuesStub, repos, query);
+            });
+        });
 
-		it('resolves to the result of githubHelper#searchIssues', function () {
-			var query = 'myquery';
+        it('resolves to the result of githubHelper#searchIssues', function () {
+            var query = 'myquery';
 
-			searchIssuesStub.returns(q('result'));
+            searchIssuesStub.returns(q('result'));
 
-			var promise = npmDoctor.searchIssues(query);
+            var promise = npmDoctor.searchIssues(query);
 
-			return assert.becomes(promise, 'result');			
-		});
-	});
+            return assert.becomes(promise, 'result');            
+        });
+    });
 });

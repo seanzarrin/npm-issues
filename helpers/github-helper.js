@@ -4,48 +4,50 @@ var Github = require('github');
 var q = require('q');
 
 var github = new Github({
+
     // required
-    version: "3.0.0",
+    version: '3.0.0',
+
     // optional
     debug: false, // true
-    protocol: "https",
-    host: "api.github.com", // should be api.github.com for GitHub
+    protocol: 'https',
+    host: 'api.github.com', // should be api.github.com for GitHub
     timeout: 5000,
     headers: {
-        "user-agent": "npm-doctor" // GitHub is happy with a unique user agent
+        'user-agent': 'npm-doctor' // GitHub is happy with a unique user agent
     }
 });
 
-function searchIssues(repos, query) {
-	var deferred = q.defer();
+function searchIssues (repos, query) {
+    var deferred = q.defer();
 
-	var msg = {};
+    var msg = {};
 
-	msg.headers = {
-		Accept: 'application/vnd.github.v3.text-match+json'
-	};
+    msg.headers = {
+        Accept: 'application/vnd.github.v3.text-match+json'
+    };
 
-	var reposQuery = repos.map(function (repo) {
-		return 'repo:'+repo;
-	}).join(' ');
+    var reposQuery = repos.map(function (repo) {
+        return 'repo:' + repo;
+    }).join(' ');
 
-	msg.q = query || '';
+    msg.q = query || '';
 
-	if (reposQuery) {
-		msg.q += ' ' + reposQuery;
-	}
+    if (reposQuery) {
+        msg.q += ' ' + reposQuery;
+    }
 
-	github.search.issues(msg, function (err, res) {
-		if (err) {
-			deferred.reject(err);
-		}
+    github.search.issues(msg, function (err, res) {
+        if (err) {
+            deferred.reject(err);
+        }
 
-		deferred.resolve(res);
-	});
+        deferred.resolve(res);
+    });
 
-	return deferred.promise;
+    return deferred.promise;
 }
 
 module.exports = {
-	searchIssues: searchIssues
+    searchIssues: searchIssues
 };
