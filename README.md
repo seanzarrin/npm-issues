@@ -1,8 +1,7 @@
 npm-doctor
 ==============================
 
-npm-doctor is a command line tool that searches the github issues pages
-of all your locally installed npm modules at once, and gives you the matching results of your query.
+npm-doctor is a command that searches known issues of all your installed npm modules at once, and gives you the matching results of your query.
 
 ## Usage
 
@@ -23,6 +22,8 @@ https://github.com/holman/a_bad_module/issues/109
 
 the new version of a_bad_module is saying call stack size exceeded. Here's how I fixed it.
 ```
+
+In the above example, a_bad_module was a dependency of my project, and my project was working fine. But when I ran `npm install` a newer version was pulled in that _shouldn't_ have broken anything, but did with a cryptic error message.
 
 ## Installation
 ```sh
