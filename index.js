@@ -1,6 +1,5 @@
+'use strict';
 
-var npmDoctor = require('./lib/npm-doctor');
-var issueLogger = require('./lib/issue-logger');
+var npmDoctor = require('../lib/npm-doctor');
 
-npmDoctor.searchIssues()
-    .then(issueLogger.printIssues);
+module.exports = npmDoctor;
