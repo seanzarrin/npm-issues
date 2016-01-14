@@ -12,9 +12,35 @@ sinon.assert.expose(assert, {prefix: ''});
 chai.use(chaiAsPromised);
 
 describe('npm-helper', function () {
-	var spawn, procOn;
+	var spawn, procOn, npmInfo;
 
 	beforeEach(function () {
+		npmInfo = {
+			repository: {
+				url: 'git://github.com/owner1/repo1.git'
+			},
+			dependencies: {
+				package2: {
+					repository: {
+						url: 'git://github.com/owner2/repo2.git'
+					}
+				},
+				package3: {
+					repository: {
+						url: 'git://github.com/owner3/repo3.git'
+					},
+					dependencies: {
+						package4: {
+							repository: {
+								url: 'git://github.com/owner4/repo4.git4'
+							},
+							dependencies: {}
+						}
+					}
+				}
+			}
+		};
+
 		procOn = sinon.stub();
 
 		spawn = sinon.stub().returns({
@@ -48,32 +74,6 @@ describe('npm-helper', function () {
 		});
 
 		it('resolves with names of repos for dependencies', function () {
-			var npmInfo = {
-				repository: {
-					url: 'git://github.com/owner1/repo1.git'
-				},
-				dependencies: {
-					package2: {
-						repository: {
-							url: 'git://github.com/owner2/repo2.git'
-						}
-					},
-					package3: {
-						repository: {
-							url: 'git://github.com/owner3/repo3.git'
-						},
-						dependencies: {
-							package4: {
-								repository: {
-									url: 'git://github.com/owner4/repo4.git4'
-								},
-								dependencies: {}
-							}
-						}
-					}
-				}
-			};
-
 			procOn.withArgs('data').yields(JSON.stringify(npmInfo));
 			procOn.withArgs('end').yields();
 
@@ -81,6 +81,19 @@ describe('npm-helper', function () {
 
 			return promise.then(function (repoNames) {
 				assert.sameMembers(repoNames, ['owner1/repo1', 'owner2/repo2', 'owner3/repo3', 'owner4/repo4']);
+			});
+		});
+
+		it('does not include repo names that are not parseable', function () {
+			npmInfo.dependencies.package2.repository.url = 'notarepo';
+
+			procOn.withArgs('data').yields(JSON.stringify(npmInfo));
+			procOn.withArgs('end').yields();
+
+			var promise = npmHelper.getRepos();
+
+			return promise.then(function (repoNames) {
+				assert.sameMembers(repoNames, ['owner1/repo1', 'owner3/repo3', 'owner4/repo4']);
 			});
 		});
 	});
