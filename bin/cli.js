@@ -33,5 +33,10 @@ npmDoctor.searchIssues(query, depth)
     	issueLogger.log(issues, limit);
     })
     .catch(function (err) {
-    	console.error('GitHub rate limits requests, so you may have to wait a minute to try again');
+    	console.error([
+    		'GitHub rate limits requests, so you may have to wait a minute to try again',
+    		'If you keep seeing this message, try with a smaller depth (ie: npm-doctor --depth 1)',
+    		'If you still keep seeing this, report a bug at https://github.com/seanzarrin/npm-doctor/issues'
+
+    	].join('\n'));
     });
