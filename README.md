@@ -24,7 +24,7 @@ https://github.com/holman/a_bad_module/issues/109
 the new version of a_bad_module is saying call stack size exceeded. Here's how I fixed it.
 ```
 
-In the above example, a_bad_module was a dependency of my project, and my project was working fine. But when I ran `npm install` a newer version was pulled in that _shouldn't_ have broken anything, but did with a cryptic error message.
+In the above example, a_bad_module was a dependency of my project, and my project was working fine. But when I ran `npm install` a newer version was pulled in that _shouldn't_ have broken anything, but did with a cryptic error message. Running `npm-doctor` with the error message gave a text-snippet of an issue already filed against one of my dependencies, and includes the url to that issue.
 
 ## Installation
 ```sh
