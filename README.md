@@ -4,7 +4,7 @@ npm-doctor
 
 npm-doctor is a command that searches known issues of all your installed npm modules at once, and gives you the matching results of your query.
 
-## Usage
+## Example
 
 For example, when this happens
 ```sh
@@ -31,8 +31,17 @@ In the above example, a_bad_module was a dependency of my project, and my projec
 npm install -g npm-doctor
 ```
 
+## Usage
+```sh
+npm-doctor [options] [query]
+```
+
+where the following options are available:
+--depth [int]    The maximum depth of your local node modules that should be included in the search
+--limit [int]    The maximum number of results you would like logged to console
+
 ## Bugs
-When you find issues, please add an issue to the repo
+When you find issues with npm-doctor, please file them here https://github.com/seanzarrin/npm-doctor/issues
 
 ## Contributions
 Feel free to contribue. But please add tests and keep coverage at 100%. You can run tests by doing `npm test`, and view the coverage report at the bottom of the output.
