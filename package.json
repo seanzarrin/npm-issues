@@ -1,6 +1,6 @@
 {
   "name": "npm-doctor",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Search github issues based on the node modules you've installed locally",
   "main": "index.js",
   "engines": {
