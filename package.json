@@ -1,10 +1,10 @@
 {
   "name": "npm-doctor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Search github issues based on the node modules you've installed locally",
   "main": "index.js",
   "engines": {
-      "node": ">=0.10.0"
+    "node": ">=0.10.0"
   },
   "bin": {
     "npm-doctor": "./bin/cli.js"
