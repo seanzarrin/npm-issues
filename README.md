@@ -36,9 +36,9 @@ npm install -g npm-doctor
 npm-doctor [options] [query]
 ```
 
-where the following options are available:
---depth [int]    The maximum depth of your local node modules that should be included in the search
---limit [int]    The maximum number of results you would like logged to console
+where the following options are available:  
+`--depth [int]`    The maximum depth of your local node modules that should be included in the search  
+`--limit [int]`    The maximum number of results you would like logged to console
 
 ## Bugs
 When you find issues with npm-doctor, please file them here https://github.com/seanzarrin/npm-doctor/issues
