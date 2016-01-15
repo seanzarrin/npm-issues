@@ -6,6 +6,7 @@ var q = require('q');
 var MAX_URL_LENGTH = 1000; // Keep url length at reasonable size so request is not rejected
 
 var github = new Github({
+
     // required
     version: '3.0.0',
 
@@ -19,18 +20,18 @@ var github = new Github({
     }
 });
 
-function _appendRepoToQuery(query, repo) {
+function _appendRepoToQuery (query, repo) {
     return query + ' repo:' + repo;
 }
 
-function _createGithubRequest(query, headers) {
+function _createGithubRequest (query, headers) {
     return {
         headers: headers,
         q: query
     };
 }
 
-function _createGithubRequests(repos, query, headers) {
+function _createGithubRequests (repos, query, headers) {
     query = query || '';
     var requests = [];
     var currentQuery = query;

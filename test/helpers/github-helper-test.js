@@ -102,7 +102,7 @@ describe('github-helper', function () {
             beforeEach(function () {
                 repos = [];
 
-                for (var i=0; i<500; i++) {
+                for (var i = 0; i < 500; i++) {
                     repos.push('random_repo');
                 }
 
@@ -125,7 +125,7 @@ describe('github-helper', function () {
 
                 var expectedItems = [];
 
-                for (var i=0; i<9; i++) {
+                for (var i = 0; i < 9; i++) {
                     expectedItems.push('item');
                 }
 

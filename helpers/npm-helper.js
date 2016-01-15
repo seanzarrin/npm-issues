@@ -35,7 +35,7 @@ function getRepos (depth) {
     var lsArgs = ['ls', '--json', '--long'];
 
     if (typeof depth !== 'undefined' && depth !== null) {
-        lsArgs.push('--depth='+depth);
+        lsArgs.push('--depth=' + depth);
     }
 
     var proc = spawn('npm', lsArgs);
