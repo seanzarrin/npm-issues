@@ -18,6 +18,7 @@
   },
   "scripts": {
     "test": "istanbul cover _mocha -- --recursive test",
+    "posttest": "npm run lint",
     "lint": "eslint bin/*.js helpers/*.js lib/*.js test/**/*.js"
   },
   "keywords": [
