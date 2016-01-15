@@ -13,7 +13,7 @@ sinon.assert.expose(assert, {prefix: ''});
 chai.use(chaiAsPromised);
 
 describe('github-helper', function () {
-    var github; 
+    var github, sampleResponse; 
 
     beforeEach(function () {
         github = {
@@ -21,6 +21,13 @@ describe('github-helper', function () {
                 issues: sinon.stub()
             }
         };
+
+        sampleResponse = {
+            total_count: 0,
+            items: []
+        };
+
+        github.search.issues.yields(null, sampleResponse);
 
         githubHelper.__set__('github', github);
     });
@@ -36,15 +43,11 @@ describe('github-helper', function () {
         });
 
         it('Resolves with the response that github.search.issues passes', function () {
-            var response = 'sample response';
-            github.search.issues.yields(undefined, response);
-
             var promise = githubHelper.searchIssues([], '');
             return assert.isFulfilled(promise, 'sample response');
         });
 
-        it('Calls github#searchIssues with a properly formatted github api request', function () {
-            github.search.issues.yields();
+        it('Calls github.search.issues with a properly formatted github api request', function () {
             var promise = githubHelper.searchIssues(['repo1', 'repo2'], 'query');
 
             var expectedRequest = {
@@ -54,14 +57,13 @@ describe('github-helper', function () {
                 q: 'query repo:repo1 repo:repo2'
             };
 
-            promise.then(function () {
+            return promise.then(function () {
                 assert.calledWith(github.search.issues, expectedRequest);
             });
         });
 
         describe('without repos', function () {
-            it('Calls github#searchIssues with a request without repo names', function () {
-                github.search.issues.yields();
+            it('Calls github.search.issues with a request without repo names', function () {
                 var promise = githubHelper.searchIssues([], 'query');
 
                 var expectedRequest = {
@@ -78,8 +80,7 @@ describe('github-helper', function () {
         });
 
         describe('without a query', function () {
-            it('Calls github#searchIssues with a request without a query', function () {
-                github.search.issues.yields();
+            it('Calls github.search.issues with a request without a query', function () {
                 var promise = githubHelper.searchIssues(['repo1', 'repo2']);
 
                 var expectedRequest = {
@@ -91,6 +92,46 @@ describe('github-helper', function () {
 
                 return promise.then(function () {
                     assert.calledWith(github.search.issues, expectedRequest);
+                });
+            });
+        });
+
+        describe('with a huge query', function () {
+            var repos;
+
+            beforeEach(function () {
+                repos = [];
+
+                for (var i=0; i<500; i++) {
+                    repos.push('random_repo');
+                }
+
+                github.search.issues.yields(null, {
+                    total_count: 1,
+                    items: ['item']
+                });
+            });
+
+            it('Calls github.search.issues multiple times to fit url limit', function () {
+                var promise = githubHelper.searchIssues(repos, 'query');
+
+                return promise.then(function () {
+                    assert.equal(github.search.issues.callCount, 9);
+                });
+            });
+
+            it('Concatenates the results of the multiple requests', function () {
+                var promise = githubHelper.searchIssues(repos, 'query');
+
+                var expectedItems = [];
+
+                for (var i=0; i<9; i++) {
+                    expectedItems.push('item');
+                }
+
+                return assert.becomes(promise, {
+                    total_count: 9,
+                    items: expectedItems
                 });
             });
         });

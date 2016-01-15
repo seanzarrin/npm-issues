@@ -3,8 +3,9 @@
 var Github = require('github');
 var q = require('q');
 
-var github = new Github({
+var MAX_URL_LENGTH = 1000; // Keep url length at reasonable size so request is not rejected
 
+var github = new Github({
     // required
     version: '3.0.0',
 
@@ -18,34 +19,74 @@ var github = new Github({
     }
 });
 
+function _appendRepoToQuery(query, repo) {
+    return query + ' repo:' + repo;
+}
+
+function _createGithubRequest(query, headers) {
+    return {
+        headers: headers,
+        q: query
+    };
+}
+
+function _createGithubRequests(repos, query, headers) {
+    query = query || '';
+    var requests = [];
+    var currentQuery = query;
+
+    repos.forEach(function (repo) {
+        var newQuery = _appendRepoToQuery(currentQuery, repo);
+
+        if (newQuery.length > MAX_URL_LENGTH) {
+            requests.push(_createGithubRequest(currentQuery, headers));
+
+            currentQuery = _appendRepoToQuery(query, repo);
+        }
+        else {
+            currentQuery = newQuery;
+        }
+    });
+
+    requests.push(_createGithubRequest(currentQuery, headers));
+
+    return requests;
+}
+
 function searchIssues (repos, query) {
-    var deferred = q.defer();
-
-    var msg = {};
-
-    msg.headers = {
+    var headers = {
         Accept: 'application/vnd.github.v3.text-match+json'
     };
 
-    var reposQuery = repos.map(function (repo) {
-        return 'repo:' + repo;
-    }).join(' ');
+    var requests = _createGithubRequests(repos, query, headers);
 
-    msg.q = query || '';
+    var promises = requests.map(function (request) {
+        var deferred = q.defer();
 
-    if (reposQuery) {
-        msg.q += ' ' + reposQuery;
-    }
+        github.search.issues(request, function (err, res) {
+            if (err) {
+                deferred.reject(err);
+            }
 
-    github.search.issues(msg, function (err, res) {
-        if (err) {
-            deferred.reject(err);
-        }
+            deferred.resolve(res);
+        });
 
-        deferred.resolve(res);
+        return deferred.promise;
     });
 
-    return deferred.promise;
+    var concatenatedResult = {};
+    concatenatedResult.total_count = 0;
+    concatenatedResult.items = [];
+
+    return q.all(promises)
+        .then(function (responses) {
+            responses.forEach(function (response) {
+                concatenatedResult.total_count += response.total_count;
+                concatenatedResult.items = concatenatedResult.items.concat(response.items);           
+            });
+
+            return concatenatedResult;
+        });
 }
 
 module.exports = {
