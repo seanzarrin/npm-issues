@@ -20,9 +20,15 @@ function getRepoName (url) {
     return matches && matches[1];
 }
 
-function getRepos () {
+function getRepos (depth) {
     var deferred = q.defer();
-    var proc = spawn('npm', ['ls', '--json', '--long']);
+    var lsArgs = ['ls', '--json', '--long'];
+
+    if (typeof depth !== 'undefined' && depth !== null) {
+        lsArgs.push('--depth='+depth);
+    }
+
+    var proc = spawn('npm', lsArgs);
     var stdout = '';
 
     proc.stdout.on('error', function (err) {

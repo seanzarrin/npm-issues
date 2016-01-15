@@ -63,6 +63,15 @@ describe('npm-helper', function () {
                 });
         });
 
+        it('calls spawn with a depth if one is specified', function () {
+            procOn.withArgs('end').yields();
+
+            return npmHelper.getRepos(3)
+                .then(function () {
+                    return assert.calledWith(spawn, 'npm', ['ls', '--json', '--long', '--depth=3']);
+                });
+        });
+
         it('rejects when spawn passes an error', function () {
             var error = new Error('sample error');
 
