@@ -14,12 +14,22 @@ function _addRepository (repos, module) {
     }
 }
 
+/**
+ * Parses a repo name from a repo url
+ * @param  {String} url - The url to parse the repo name from
+ * @return {String} The repo name in format owner/repo. Undefined otherwise
+ */
 function getRepoName (url) {
     var regex = new RegExp('github.com/([^/]*/[^/]*)\.git');
     var matches = url.match(regex);
     return matches && matches[1];
 }
 
+/**
+ * Find all modules locally installed in this package
+ * @param  {number} depth - Optional argument to limit depth of installs to traverse
+ * @return {Promise} A promise which resolves to a list of repo names
+ */
 function getRepos (depth) {
     var deferred = q.defer();
     var lsArgs = ['ls', '--json', '--long'];

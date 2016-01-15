@@ -53,6 +53,12 @@ function _createGithubRequests(repos, query, headers) {
     return requests;
 }
 
+/**
+ * Search repos on github for issues containing query
+ * @param  {String[]} repos - An array of repo names formatted as owner/repo
+ * @param  {String} query - A query to search for in the issues
+ * @return {Promise} A promise which resolves with the concatenated result from github api
+ */
 function searchIssues (repos, query) {
     var headers = {
         Accept: 'application/vnd.github.v3.text-match+json'
