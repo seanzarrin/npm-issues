@@ -56,5 +56,23 @@ describe('issue-logger', function () {
             assert.calledWith(consoleStub, 'the fragment of ' + chalk.bgGreen('text'));
         });
 
+        it('will log up to a number of issues if a limit is set', function () {
+            issuesObject.items.push({
+                html_url: 'issue_url',
+                text_matches: [
+                    {
+                        fragment: 'the fragment of text',
+                        matches: [
+                            {
+                                text: 'text'
+                            }
+                        ]
+                    }
+                ]
+            });
+            issueLogger.log(issuesObject, 1);
+            assert.equal(consoleStub.callCount, 3);
+        });
+
     });
 });
