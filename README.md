@@ -1,5 +1,6 @@
 npm-doctor
 ==============================
+[![Build Status](https://travis-ci.org/seanzarrin/npm-doctor.svg?branch=master)](https://travis-ci.org/seanzarrin/npm-doctor)
 
 npm-doctor is a command that searches known issues of all your installed npm modules at once, and gives you the matching results of your query.
 
