@@ -37,9 +37,11 @@ npm-doctor [options] [query]
 ```
 
 where the following options are available:  
-`--depth [int]`    The maximum depth of your local node modules that should be included in the search  
-`--limit [int]`    (defaults to 10) The maximum number of results you would like logged to console  
-`--nolimit`        Removes the default limit of 10 issues for logging
+`--depth [int]`     The maximum depth of your local node modules that should be included in the search  
+`--limit [int]`     (defaults to 10) The maximum number of results you would like logged to console  
+`--nolimit`         Removes the default limit of 10 issues for logging
+'--module [module]  Restricts searching to a submodule',
+'--norecursive      Will not recursively search submodules for dependencies'
 
 ## Bugs
 When you find issues with npm-doctor, please file them here https://github.com/seanzarrin/npm-doctor/issues
