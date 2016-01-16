@@ -30,9 +30,13 @@ function getRepoName (url) {
  * @param  {number} depth - Optional argument to limit depth of installs to traverse
  * @return {Promise} A promise which resolves to a list of repo names
  */
-function getRepos (depth) {
+function getRepos (depth, submodule, noRecursive) {
     var deferred = q.defer();
     var lsArgs = ['ls', '--json', '--long'];
+
+    if (submodule) {
+        lsArgs = ['explore', submodule, '--', 'npm'].concat(lsArgs);
+    }
 
     if (typeof depth !== 'undefined' && depth !== null) {
         lsArgs.push('--depth=' + depth);
@@ -58,6 +62,16 @@ function getRepos (depth) {
         // Include the current module in collection of issues
         _addRepository(repos, module);
 
+        if (noRecursive) {
+            if (!Object.keys(repos).length) {
+                deferred.reject(new Error("No repo to search for"));
+            }
+            else {
+                deferred.resolve(Object.keys(repos));
+            }
+            return;
+        }
+
         var queue = [];
         var dependencies = module.dependencies;
 
@@ -77,6 +91,10 @@ function getRepos (depth) {
 
                 _addRepository(repos, module);
             });
+        }
+
+        if (!Object.keys(repos).length) {
+            deferred.reject(new Error('No repos to search for'));
         }
 
         deferred.resolve(Object.keys(repos));
