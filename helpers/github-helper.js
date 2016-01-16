@@ -79,7 +79,7 @@ function _createGithubRequests (repos, query, headers) {
  * @param  {String} query - A query to search for in the issues
  * @return {Promise} A promise which resolves with the concatenated result from github api
  */
-function searchIssues (repos, query) {
+function searchIssues (repos, query, state) {
     if (!repos.length) {
         return Promise.reject('Could not find any issues urls to search through');
     }
@@ -87,6 +87,10 @@ function searchIssues (repos, query) {
     var headers = {
         Accept: 'application/vnd.github.v3.text-match+json'
     };
+
+    if (state) {
+        query += ' state:' + state;
+    }
 
     var requests = _createGithubRequests(repos, query, headers);
 
