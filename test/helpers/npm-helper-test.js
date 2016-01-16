@@ -42,6 +42,7 @@ describe('npm-helper', function () {
         };
 
         procOn = sinon.stub();
+        procOn.withArgs('data').yields(JSON.stringify(npmInfo));
 
         spawn = sinon.stub().returns({
             stdout: {
@@ -72,6 +73,15 @@ describe('npm-helper', function () {
                 });
         });
 
+        it('calls spawn with a submodule if one is specified', function () {
+            procOn.withArgs('end').yields();
+
+            return npmHelper.getRepos(3, 'myrepo')
+                .then(function () {
+                    return assert.calledWith(spawn, 'npm', ['explore', 'myrepo', '--', 'npm', 'ls', '--json', '--long', '--depth=3']);
+                });
+        });
+
         it('rejects when spawn passes an error', function () {
             var error = new Error('sample error');
 
@@ -83,7 +93,6 @@ describe('npm-helper', function () {
         });
 
         it('resolves with names of repos for dependencies', function () {
-            procOn.withArgs('data').yields(JSON.stringify(npmInfo));
             procOn.withArgs('end').yields();
 
             var promise = npmHelper.getRepos();
@@ -95,7 +104,6 @@ describe('npm-helper', function () {
 
         it('does not include repo names that are not parseable', function () {
             npmInfo.dependencies.package2.repository.url = 'notarepo';
-
             procOn.withArgs('data').yields(JSON.stringify(npmInfo));
             procOn.withArgs('end').yields();
 
@@ -104,6 +112,53 @@ describe('npm-helper', function () {
             return promise.then(function (repoNames) {
                 assert.sameMembers(repoNames, ['owner1/repo1', 'owner3/repo3', 'owner4/repo4']);
             });
+        });
+
+        it('does not throw if a repo has no url', function () {
+            delete npmInfo.dependencies.package2.repository.url;
+            procOn.withArgs('data').yields(JSON.stringify(npmInfo));
+            procOn.withArgs('end').yields();
+
+            var promise = npmHelper.getRepos();
+
+            return assert.isFulfilled(promise);   
+        });
+
+        it('does not throw if a repo has no repository entry in package.json', function () {
+            delete npmInfo.dependencies.package2.repository;
+            procOn.withArgs('data').yields(JSON.stringify(npmInfo));
+            procOn.withArgs('end').yields();
+
+            var promise = npmHelper.getRepos();
+
+            return assert.isFulfilled(promise); 
+        });
+
+        it('resolves only with the root package if noRecursive is true', function () {
+            procOn.withArgs('end').yields();
+
+            var promise = npmHelper.getRepos(undefined, undefined, true);
+
+            return assert.becomes(promise, ['owner1/repo1']);
+        });
+
+        it('resolves only with the root package if there are no modules installed', function () {
+            delete npmInfo.dependencies;
+            procOn.withArgs('data').yields(JSON.stringify(npmInfo));
+            procOn.withArgs('end').yields();
+
+            var promise = npmHelper.getRepos();
+
+            return assert.becomes(promise, ['owner1/repo1']);
+        });
+
+        it('resolves with an empty array if npm command prints nothing to stdout', function () {
+            procOn.withArgs('data').yields('');
+            procOn.withArgs('end').yields();
+
+            var promise = npmHelper.getRepos();
+
+            return assert.becomes(promise, []);
         });
     });
 

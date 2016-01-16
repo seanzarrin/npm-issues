@@ -80,6 +80,10 @@ function _createGithubRequests (repos, query, headers) {
  * @return {Promise} A promise which resolves with the concatenated result from github api
  */
 function searchIssues (repos, query) {
+    if (!repos.length) {
+        return Promise.reject('Could not find any issues urls to search through');
+    }
+
     var headers = {
         Accept: 'application/vnd.github.v3.text-match+json'
     };

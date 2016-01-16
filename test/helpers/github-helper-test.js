@@ -13,7 +13,7 @@ sinon.assert.expose(assert, {prefix: ''});
 chai.use(chaiAsPromised);
 
 describe('github-helper', function () {
-    var github, sampleResponse; 
+    var github, sampleResponse, repos;
 
     beforeEach(function () {
         github = {
@@ -27,6 +27,8 @@ describe('github-helper', function () {
             items: []
         };
 
+        repos = ['repo1', 'repo2'];
+
         github.search.issues.yields(null, sampleResponse);
 
         githubHelper.__set__('github', github);
@@ -38,17 +40,17 @@ describe('github-helper', function () {
             var error = new Error('sample error');
             github.search.issues.yields(error);
 
-            var promise = githubHelper.searchIssues([], '');
+            var promise = githubHelper.searchIssues(repos, '');
             return assert.isRejected(promise, /sample error/);
         });
 
         it('Resolves with the response that github.search.issues passes', function () {
-            var promise = githubHelper.searchIssues([], '');
+            var promise = githubHelper.searchIssues(repos, '');
             return assert.isFulfilled(promise, 'sample response');
         });
 
         it('Calls github.search.issues with a properly formatted github api request', function () {
-            var promise = githubHelper.searchIssues(['repo1', 'repo2'], 'query');
+            var promise = githubHelper.searchIssues(repos, 'query');
 
             var expectedRequest = {
                 headers: {
@@ -63,25 +65,16 @@ describe('github-helper', function () {
         });
 
         describe('without repos', function () {
-            it('Calls github.search.issues with a request without repo names', function () {
+            it('Rejects with an error message', function () {
                 var promise = githubHelper.searchIssues([], 'query');
 
-                var expectedRequest = {
-                    headers: {
-                        Accept: 'application/vnd.github.v3.text-match+json'
-                    },
-                    q: 'query'
-                };
-
-                return promise.then(function () {
-                    assert.calledWith(github.search.issues, expectedRequest);
-                });
+                return assert.isRejected(promise, 'Could not find any issues urls to search through');
             });
         });
 
         describe('without a query', function () {
             it('Calls github.search.issues with a request without a query', function () {
-                var promise = githubHelper.searchIssues(['repo1', 'repo2']);
+                var promise = githubHelper.searchIssues(repos);
 
                 var expectedRequest = {
                     headers: {

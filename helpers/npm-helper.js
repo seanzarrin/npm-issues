@@ -68,12 +68,7 @@ function getRepos (depth, submodule, noRecursive) {
         _addRepository(repos, module);
 
         if (noRecursive) {
-            if (!Object.keys(repos).length) {
-                deferred.reject(new Error("No repo to search for"));
-            }
-            else {
-                deferred.resolve(Object.keys(repos));
-            }
+            deferred.resolve(Object.keys(repos));
             return;
         }
 
@@ -96,10 +91,6 @@ function getRepos (depth, submodule, noRecursive) {
 
                 _addRepository(repos, module);
             });
-        }
-
-        if (!Object.keys(repos).length) {
-            deferred.reject(new Error('No repos to search for'));
         }
 
         deferred.resolve(Object.keys(repos));
