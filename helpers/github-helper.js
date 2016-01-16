@@ -20,10 +20,22 @@ var github = new Github({
     }
 });
 
+/**
+ * Adds repo to list of repos in github query
+ * @param  {String} query - The string to search for
+ * @param  {String} repo - An additional repo to search through
+ * @return {String} - The resulting query with repo added
+ */
 function _appendRepoToQuery (query, repo) {
     return query + ' repo:' + repo;
 }
 
+/**
+ * Creates a request object to search for github issues containing query
+ * @param  {String} query - The string to search for
+ * @param  {Object} headers - The headers to send with the request
+ * @return {Object} The request object
+ */
 function _createGithubRequest (query, headers) {
     return {
         headers: headers,
@@ -31,6 +43,13 @@ function _createGithubRequest (query, headers) {
     };
 }
 
+/**
+ * Creates an array of request objects for searching github issues, split up so not to pass url limit
+ * @param  {String[]} repos - An array of repo names to search through
+ * @param  {String} query - The string to search through issues with
+ * @param  {Object} headers - The header to include in the request
+ * @return {Object[]} - The array of request objects
+ */
 function _createGithubRequests (repos, query, headers) {
     query = query || '';
     var requests = [];

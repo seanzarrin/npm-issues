@@ -3,6 +3,11 @@
 var spawn = require('child_process').spawn;
 var q = require('q');
 
+/**
+ * Add repository name of module to the repos object
+ * @param {Object} repos - An object with keys of repos pointing to true
+ * @param {Object} module - The package.json of a module
+ */
 function _addRepository (repos, module) {
     var repoName;
 
