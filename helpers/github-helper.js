@@ -81,7 +81,9 @@ function _createGithubRequests (repos, query, headers) {
  */
 function searchIssues (repos, query, state) {
     if (!repos.length) {
-        return Promise.reject('Could not find any issues urls to search through');
+        var deferred = q.defer();
+        deferred.reject('Could not find any issues urls to search through');
+        return deferred.promise;
     }
 
     var headers = {
