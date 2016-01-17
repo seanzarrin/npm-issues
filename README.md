@@ -45,6 +45,12 @@ where the following options are available:
 `--state [open|closed]`   (defaults to `open`) Only include issues that are either `open` or `closed`.  
 `--global`                Search issues for modules that have been globally installed  
 
+## More Examples
+`npm-issues --global --module npm "Null pointer"` Will search for open issues with npm matching the text `"Null pointer"`, along with any issues of npm's dependencies and nested dependencies  
+`npm-issues --global --module npm --norecursive "Null pointer"` Will search only for open issues with npm matching the text `"Null pointer"`. It will not search for issues of npm's dependencies  
+`npm-issues "Null pointer"` Will search for open issues of any of the dependencies installed in the current folder (and the nested dependencies), matching the text `"Null pointer"`  
+`npm-issues --state closed "RangeError"` Will search for closed issues of the dependencies installed in the current folder (and their dependencies), matching the text `"RangeError"`.
+
 ## Bugs
 When you find issues with npm-issues, please file them here https://github.com/seanzarrin/npm-issues/issues
 
