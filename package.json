@@ -1,6 +1,6 @@
 {
   "name": "npm-issues",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Search github issues based on the node modules you've installed locally",
   "engines": {
     "node": ">=0.10.0"
