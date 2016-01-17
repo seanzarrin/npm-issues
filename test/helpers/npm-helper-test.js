@@ -82,6 +82,24 @@ describe('npm-helper', function () {
                 });
         });
 
+        it('calls spawn with a submodule and global flag if they are given', function () {
+            procOn.withArgs('end').yields();
+
+            return npmHelper.getRepos(undefined, 'myRepo', undefined, true)
+                .then(function () {
+                    return assert.calledWith(spawn, 'npm', ['explore', '--global', 'myRepo', '--', 'npm', 'ls', '--json', '--long']);
+                });
+        });
+
+        it('calls spawn with a global flag if it is set', function () {
+            procOn.withArgs('end').yields();
+
+            return npmHelper.getRepos(undefined, undefined, undefined, true)
+                .then(function () {
+                    return assert.calledWith(spawn, 'npm', ['ls', '--json', '--long', '--global']);
+                });
+        });
+
         it('rejects when spawn passes an error', function () {
             var error = new Error('sample error');
 

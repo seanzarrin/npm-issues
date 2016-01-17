@@ -35,12 +35,22 @@ function getRepoName (url) {
  * @param  {number} depth - Optional argument to limit depth of installs to traverse
  * @return {Promise} A promise which resolves to a list of repo names
  */
-function getRepos (depth, submodule, noRecursive) {
+function getRepos (depth, submodule, noRecursive, isGlobal) {
     var deferred = q.defer();
     var lsArgs = ['ls', '--json', '--long'];
 
     if (submodule) {
-        lsArgs = ['explore', submodule, '--', 'npm'].concat(lsArgs);
+        if (isGlobal) {
+            lsArgs = ['explore', '--global', submodule, '--', 'npm'].concat(lsArgs);        
+        }
+
+        else {
+            lsArgs = ['explore', submodule, '--', 'npm'].concat(lsArgs); 
+        }
+    }
+
+    else if (isGlobal) {
+        lsArgs.push('--global');
     }
 
     if (typeof depth !== 'undefined' && depth !== null) {

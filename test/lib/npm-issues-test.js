@@ -137,6 +137,15 @@ describe('npm-issues', function () {
                     });
                 });
 
+                it('calls npmHelper#getRepos with global flag if it is given', function () {
+                    options.global = true;
+                    var promise = npmIssues.searchIssues(options);
+
+                    return promise.then(function () {
+                        assert.calledWith(getReposStub, undefined, undefined, undefined, true);
+                    });
+                });
+
                 it('calls npmHelper#getRepos with noRecursive as true if it is set', function () {
                     options.norecursive = true;
                     var promise = npmIssues.searchIssues(options);
