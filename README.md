@@ -45,6 +45,10 @@ Will search only for open issues with npm matching the text `"Null pointer"`. It
 `npm-issues --state closed "RangeError"`  
 Will search for closed issues of the dependencies installed in the current folder (and the nested dependencies), matching the text `"RangeError"`.
 
+## FAQ
+_Why do I keep seeing this message: "GitHub rate limits requests, so you may have to wait a minute to try again"?_  
+`npm-issues` uses GitHub's api to search for issues, which is rate limited based on your IP. The limit refreshes every minute, so try again after a minute passes. If you keep seeing this, you probably have a lot of modules installed, which means more requests per search. To reduce this amount, and see this error less, try using the `--norecursive` or `--depth` options.
+
 ## Bugs
 When you find issues with npm-issues, please file them here https://github.com/seanzarrin/npm-issues/issues
 
