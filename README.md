@@ -42,7 +42,7 @@ where the following options are available:
 `--nolimit`               Removes the default limit of 10 issues for logging
 '--module [module]        Restricts searching to a submodule
 '--norecursive            Will not recursively search submodules for dependencies
-`--state [open|closed]`   Only include issues that are open or closed. If this is not specified, will include both states
+`--state [open|closed]`   (defaults to open) Only include issues that are either open or closed.
 
 ## Bugs
 When you find issues with npm-doctor, please file them here https://github.com/seanzarrin/npm-doctor/issues

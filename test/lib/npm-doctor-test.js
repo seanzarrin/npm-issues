@@ -85,11 +85,11 @@ describe('npm-doctor', function () {
         });
 
         describe('- query is given', function () {
-            it('calls githubHelper#searchIssues with repos and a query', function () {
+            it('calls githubHelper#searchIssues with repos, query, and default state of open', function () {
                 var promise = npmDoctor.searchIssues(options);
 
                 return promise.then(function () {
-                    assert.calledWith(searchIssuesStub, repos, query);
+                    assert.calledWith(searchIssuesStub, repos, query, 'open');
                 });
             });
 
@@ -165,11 +165,11 @@ describe('npm-doctor', function () {
                 });
 
                 it('calls githubHelper#searchIssues with state if one is specified', function () {
-                    options.state = 'open';
+                    options.state = 'closed';
                     var promise = npmDoctor.searchIssues(options);
 
                     return promise.then(function () {
-                        assert.calledWith(searchIssuesStub, repos, query, 'open');
+                        assert.calledWith(searchIssuesStub, repos, query, 'closed');
                     });
                 });
 
