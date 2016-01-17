@@ -2,7 +2,7 @@ npm-issues
 ==============================
 [![Build Status](https://travis-ci.org/seanzarrin/npm-issues.svg?branch=master)](https://travis-ci.org/seanzarrin/npm-issues)
 
-npm-issues is a command that searches known issues of all the installed npm modules in the current folder at once, and gives you the matching results of your query.
+npm-issues is a command that lets you search known issues of all the installed npm modules in the current folder at once
 
 ## Example
 
