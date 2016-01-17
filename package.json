@@ -1,19 +1,19 @@
 {
-  "name": "npm-doctor",
-  "version": "2.0.1",
+  "name": "npm-issues",
+  "version": "1.0.0",
   "description": "Search github issues based on the node modules you've installed locally",
   "engines": {
     "node": ">=0.10.0"
   },
   "bin": {
-    "npm-doctor": "./bin/cli.js"
+    "npm-issues": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seanzarrin/npm-doctor"
+    "url": "https://github.com/seanzarrin/npm-issues"
   },
   "bugs": {
-    "url": "https://github.com/seanzarrin/npm-doctor/issues"
+    "url": "https://github.com/seanzarrin/npm-issues/issues"
   },
   "scripts": {
     "test": "istanbul cover _mocha -- --recursive test",
