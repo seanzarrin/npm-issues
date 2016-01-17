@@ -6,23 +6,7 @@ npm-issues is a command that searches known issues of all your installed npm mod
 
 ## Example
 
-For example, when this happens
-```sh
-npm install
-npm start
-RangeError: Maximum call stack size exceeded
-# wait what... but this was working a second ago
-```
-
-do this,
-```sh
-npm-issues "RangeError: Maximum call stack size exceeded"
-found 1 result...
-
-https://github.com/holman/a_bad_module/issues/109
-
-the new version of a_bad_module is saying call stack size exceeded. Here's how I fixed it.
-```
+![Alt text](/../images/npm-issues.gif?raw=true "When npm install breaks something")
 
 In the above example, a_bad_module was a dependency of my project, and my project was working fine. But when I ran `npm install` a newer version was pulled in that _shouldn't_ have broken anything, but did with a cryptic error message. Running `npm-issues` with the error message gave a text-snippet of an issue already filed against one of my dependencies, and includes the url to that issue.
 
