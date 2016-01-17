@@ -163,6 +163,75 @@ describe('npm-doctor', function () {
                         assert.calledWith(logIssuesStub, logIssuesResult, undefined);
                     });
                 });
+
+                it('calls githubHelper#searchIssues with state if one is specified', function () {
+                    options.state = 'open';
+                    var promise = npmDoctor.searchIssues(options);
+
+                    return promise.then(function () {
+                        assert.calledWith(searchIssuesStub, repos, query, 'open');
+                    });
+                });
+
+                describe('- with invalid options', function () {
+                    it('prints an error when depth is set to non-number', function () {
+                        options.depth = 'notanumber';
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return promise.catch(function () {
+                            assert.calledWith(consoleLogStub, '--depth must be a number');
+                        });
+                    });
+
+                    it('prints an error when log is set to non-number', function () {
+                        options.limit = 'notanumber';
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return promise.catch(function () {
+                            assert.calledWith(consoleLogStub, '--limit must be a number');
+                        });
+                    });
+
+                    it('prints an error when module is set to non-string', function () {
+                        options.module = 5;
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return promise.catch(function () {
+                            assert.calledWith(consoleLogStub, '--module must be a string');
+                        });
+                    });
+
+                    it('prints an error when state is set to non-string', function () {
+                        options.state = 5;
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return promise.catch(function () {
+                            assert.calledWith(consoleLogStub, '--state must be either "open" or "closed"');
+                        });
+                    });
+
+                    it('prints an error when state is set to neither open or closed', function () {
+                        options.state = 'notopen';
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return promise.catch(function () {
+                            assert.calledWith(consoleLogStub, '--state must be either "open" or "closed"');
+                        });
+                    });
+
+                    it('rejects when options object is not constructed properly', function () {
+                        options.module = 5;
+
+                        var promise = npmDoctor.searchIssues(options);
+
+                        return assert.isRejected(promise, /Invalid options object/);
+                    });
+                });
             });
 
         });

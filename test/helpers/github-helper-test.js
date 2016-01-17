@@ -64,6 +64,21 @@ describe('github-helper', function () {
             });
         });
 
+        it('Calls github.search.issues with a state if one is given', function () {
+            var promise = githubHelper.searchIssues(repos, 'query', 'open');
+
+            var expectedRequest = {
+                headers: {
+                    Accept: 'application/vnd.github.v3.text-match+json'
+                },
+                q: 'query state:open repo:repo1 repo:repo2'
+            };
+
+            return promise.then(function () {
+                assert.calledWith(github.search.issues, expectedRequest);
+            });
+        });
+
         describe('without repos', function () {
             it('Rejects with an error message', function () {
                 var promise = githubHelper.searchIssues([], 'query');
