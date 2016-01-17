@@ -2,7 +2,7 @@ npm-issues
 ==============================
 [![Build Status](https://travis-ci.org/seanzarrin/npm-issues.svg?branch=master)](https://travis-ci.org/seanzarrin/npm-issues)
 
-npm-issues is a command that searches known issues of all your installed npm modules at once, and gives you the matching results of your query.
+npm-issues is a command that searches known issues of all the installed npm modules in the current folder at once, and gives you the matching results of your query.
 
 ## Example
 
@@ -32,6 +32,9 @@ where the following options are available:
 ## More Examples
 `npm-issues "Null pointer"`  
 Will search for open issues of any of the dependencies installed in the current folder (and the nested dependencies), matching the text `"Null pointer"`  
+
+`npm-issues --module eslint "Null pointer"`  
+Will search for open issues of eslint (assuming it is installed in this folder) and eslint's dependencies, matching the text `"Null pointer"`
 
 `npm-issues --global --module npm "Null pointer"`  
 Will search for open issues with npm matching the text `"Null pointer"`, along with any issues of npm's dependencies and nested dependencies  
