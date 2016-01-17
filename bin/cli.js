@@ -2,10 +2,10 @@
 'use strict';
 
 var minimist = require('minimist');
-var npmDoctor = require('../lib/npm-doctor');
+var npmIssues = require('../lib/npm-issues');
 
 var options = minimist(process.argv.slice(2), {
     boolean: ['no-limit', 'norecursive']
 });
 
-npmDoctor.searchIssues(options);
+npmIssues.searchIssues(options);

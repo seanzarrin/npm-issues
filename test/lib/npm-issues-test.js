@@ -9,14 +9,14 @@ var rewire = require('rewire');
 var npmHelper = require('../../helpers/npm-helper');
 var githubHelper = require('../../helpers/github-helper');
 var issueLogger = require('../../lib/issue-logger');
-var npmDoctor = rewire('../../lib/npm-doctor');
+var npmIssues = rewire('../../lib/npm-issues');
 
 var assert = chai.assert;
 
 sinon.assert.expose(assert, {prefix: ''});
 chai.use(chaiAsPromised);
 
-describe('npm-doctor', function () {
+describe('npm-issues', function () {
     // Stubs
     var getReposStub;
     var searchIssuesStub;
@@ -47,7 +47,7 @@ describe('npm-doctor', function () {
 
         consoleLogStub = sinon.stub();
         consoleErrorStub = sinon.stub();
-        npmDoctor.__set__('console', {
+        npmIssues.__set__('console', {
             log: consoleLogStub,
             error: consoleErrorStub
         });
@@ -62,7 +62,7 @@ describe('npm-doctor', function () {
     describe('#searchIssues', function () {
         describe('- no options object is given', function () {
             assert.throws(function () {
-                npmDoctor.searchIssues();
+                npmIssues.searchIssues();
             }, Error, 'must specify an options object');
         });
 
@@ -74,19 +74,19 @@ describe('npm-doctor', function () {
             });
 
             it('logs usage information', function () {
-                npmDoctor.searchIssues(options);
+                npmIssues.searchIssues(options);
                 assert.calledWith(consoleLogStub, sinon.match(/Usage/));
             });
 
             it('returns a promise which resolves to undefined', function () {
-                var returnValue = npmDoctor.searchIssues(options);
+                var returnValue = npmIssues.searchIssues(options);
                 return assert.becomes(returnValue, undefined);
             });
         });
 
         describe('- query is given', function () {
             it('calls githubHelper#searchIssues with repos, query, and default state of open', function () {
-                var promise = npmDoctor.searchIssues(options);
+                var promise = npmIssues.searchIssues(options);
 
                 return promise.then(function () {
                     assert.calledWith(searchIssuesStub, repos, query, 'open');
@@ -94,7 +94,7 @@ describe('npm-doctor', function () {
             });
 
             it('calls issueLogger#log with issues and a default limit of 10', function () {
-                var promise = npmDoctor.searchIssues(options);
+                var promise = npmIssues.searchIssues(options);
 
                 return promise.then(function () {
                     assert.calledWith(logIssuesStub, logIssuesResult, 10);
@@ -102,7 +102,7 @@ describe('npm-doctor', function () {
             });
 
             it('resolves to undefined', function () {
-                var promise = npmDoctor.searchIssues(options);
+                var promise = npmIssues.searchIssues(options);
 
                 return assert.becomes(promise, undefined);            
             });
@@ -111,7 +111,7 @@ describe('npm-doctor', function () {
                 var error = new Error('error');
                 searchIssuesStub.throws(error);
 
-                var promise = npmDoctor.searchIssues(options);
+                var promise = npmIssues.searchIssues(options);
 
                 return promise.then(function () {
                     assert.calledWith(consoleErrorStub, error);
@@ -121,7 +121,7 @@ describe('npm-doctor', function () {
             describe('- additional options are given', function () {
                 it('calls npmHelper#getRepos with depth if one is given', function () {
                     options.depth = 5;
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(getReposStub, 5);
@@ -130,7 +130,7 @@ describe('npm-doctor', function () {
 
                 it('calls npmHelper#getRepos with module if one is given', function () {
                     options.module = 'mymodule';
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(getReposStub, undefined, 'mymodule');
@@ -139,7 +139,7 @@ describe('npm-doctor', function () {
 
                 it('calls npmHelper#getRepos with noRecursive as true if it is set', function () {
                     options.norecursive = true;
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(getReposStub, undefined, undefined, true);
@@ -148,7 +148,7 @@ describe('npm-doctor', function () {
 
                 it('calls issueLogger with a different limit if one is specified', function () {
                     options.limit = 20;
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(logIssuesStub, logIssuesResult, 20);
@@ -157,7 +157,7 @@ describe('npm-doctor', function () {
 
                 it('calls issueLogger with no limit if noLimit is set', function () {
                     options.nolimit = true;
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(logIssuesStub, logIssuesResult, undefined);
@@ -166,7 +166,7 @@ describe('npm-doctor', function () {
 
                 it('calls githubHelper#searchIssues with state if one is specified', function () {
                     options.state = 'closed';
-                    var promise = npmDoctor.searchIssues(options);
+                    var promise = npmIssues.searchIssues(options);
 
                     return promise.then(function () {
                         assert.calledWith(searchIssuesStub, repos, query, 'closed');
@@ -177,7 +177,7 @@ describe('npm-doctor', function () {
                     it('prints an error when depth is set to non-number', function () {
                         options.depth = 'notanumber';
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return promise.catch(function () {
                             assert.calledWith(consoleLogStub, '--depth must be a number');
@@ -187,7 +187,7 @@ describe('npm-doctor', function () {
                     it('prints an error when log is set to non-number', function () {
                         options.limit = 'notanumber';
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return promise.catch(function () {
                             assert.calledWith(consoleLogStub, '--limit must be a number');
@@ -197,7 +197,7 @@ describe('npm-doctor', function () {
                     it('prints an error when module is set to non-string', function () {
                         options.module = 5;
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return promise.catch(function () {
                             assert.calledWith(consoleLogStub, '--module must be a string');
@@ -207,7 +207,7 @@ describe('npm-doctor', function () {
                     it('prints an error when state is set to non-string', function () {
                         options.state = 5;
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return promise.catch(function () {
                             assert.calledWith(consoleLogStub, '--state must be either "open" or "closed"');
@@ -217,7 +217,7 @@ describe('npm-doctor', function () {
                     it('prints an error when state is set to neither open or closed', function () {
                         options.state = 'notopen';
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return promise.catch(function () {
                             assert.calledWith(consoleLogStub, '--state must be either "open" or "closed"');
@@ -227,7 +227,7 @@ describe('npm-doctor', function () {
                     it('rejects when options object is not constructed properly', function () {
                         options.module = 5;
 
-                        var promise = npmDoctor.searchIssues(options);
+                        var promise = npmIssues.searchIssues(options);
 
                         return assert.isRejected(promise, /Invalid options object/);
                     });

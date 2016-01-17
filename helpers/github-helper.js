@@ -16,7 +16,7 @@ var github = new Github({
     host: 'api.github.com', // should be api.github.com for GitHub
     timeout: 5000,
     headers: {
-        'user-agent': 'npm-doctor' // GitHub is happy with a unique user agent
+        'user-agent': 'npm-issues' // GitHub is happy with a unique user agent
     }
 });
 
